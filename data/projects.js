@@ -7,9 +7,19 @@ export const PROJECTS = [
     coverImage: "./assets/projects/podcast/cover.jpg",
     teaserAlt: "Podcast cover",
     blocks: [
-      { type: "text", heading: "PODDCAST", text: "Case text – du kan bygga med text- och bildblock." }
+      {
+        type: "text",
+        heading: "PODDCAST",
+        text: "Beskrivning av podcast-projektet."
+      },
+      {
+        type: "image",
+        src: "./assets/projects/podcast/1.jpg",
+        alt: "Podcast bild 1"
+      }
     ]
   },
+
   {
     id: "sj-inrikes",
     title: "SJ INRIKES",
@@ -18,9 +28,19 @@ export const PROJECTS = [
     coverImage: "./assets/projects/sj-inrikes/cover.jpg",
     teaserAlt: "SJ Inrikes cover",
     blocks: [
-      { type: "text", heading: "SJ INRIKES", text: "Beskrivning." }
+      {
+        type: "text",
+        heading: "SJ INRIKES",
+        text: "Beskrivning av SJ Inrikes."
+      },
+      {
+        type: "image",
+        src: "./assets/projects/sj-inrikes/1.jpg",
+        alt: "SJ Inrikes bild"
+      }
     ]
   },
+
   {
     id: "sarda",
     title: "SARDA",
@@ -33,22 +53,21 @@ export const PROJECTS = [
         type: "text",
         heading: "SARDA",
         text:
-          "Genuin passion för kreativ och strategisk kommunikation som skapar meningsfull påverkan genom tydlig målgruppsförståelse. Social, uppmärksam och engagerad."
+          "Genuin passion för kreativ och strategisk kommunikation som skapar meningsfull påverkan genom tydlig målgruppsförståelse."
       },
       {
         type: "image",
         src: "./assets/projects/sarda/1.jpg",
-        alt: "SARDA – bild 1",
-        caption: "Exempelbild"
+        alt: "SARDA bild 1"
       },
       {
         type: "image",
         src: "./assets/projects/sarda/2.jpg",
-        alt: "SARDA – bild 2",
-        caption: ""
+        alt: "SARDA bild 2"
       }
     ]
   },
+
   {
     id: "rollups",
     title: "ROLLUPS",
@@ -57,8 +76,16 @@ export const PROJECTS = [
     coverImage: "./assets/projects/rollups/cover.jpg",
     teaserAlt: "Rollups cover",
     blocks: [
-      { type: "text", heading: "ROLLUPS", text: "Kort projektbeskrivning här." },
-      { type: "image", src: "./assets/projects/rollups/1.jpg", alt: "Rollups – bild 1", caption: "" }
+      {
+        type: "text",
+        heading: "ROLLUPS",
+        text: "Rollup-design för event och mässor."
+      },
+      {
+        type: "image",
+        src: "./assets/projects/rollups/1.jpg",
+        alt: "Rollups bild"
+      }
     ]
   }
 ];
