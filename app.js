@@ -6,7 +6,7 @@ const view = el("#view");
 const splash = el("#splash");
 const toast = el("#toast");
 
-const EMAIL = "example@mail.com";
+const EMAIL = "pippilover@mail.com";
 const PHONE_TEL = "+46700000000";
 const PHONE_TEXT = "+46 70 000 00 00";
 
