@@ -1,5 +1,27 @@
 export const PROJECTS = [
   {
+    id: "podcast",
+    title: "PODDCAST",
+    category: "projects",
+    year: "2024",
+    coverImage: "./assets/projects/podcast/cover.jpg",
+    teaserAlt: "Podcast cover",
+    blocks: [
+      { type: "text", heading: "PODDCAST", text: "Case text – du kan bygga med text- och bildblock." }
+    ]
+  },
+  {
+    id: "sj-inrikes",
+    title: "SJ INRIKES",
+    category: "projects",
+    year: "2023",
+    coverImage: "./assets/projects/sj-inrikes/cover.jpg",
+    teaserAlt: "SJ Inrikes cover",
+    blocks: [
+      { type: "text", heading: "SJ INRIKES", text: "Beskrivning." }
+    ]
+  },
+  {
     id: "sarda",
     title: "SARDA",
     category: "graphic-design",
@@ -38,35 +60,5 @@ export const PROJECTS = [
       { type: "text", heading: "ROLLUPS", text: "Kort projektbeskrivning här." },
       { type: "image", src: "./assets/projects/rollups/1.jpg", alt: "Rollups – bild 1", caption: "" }
     ]
-  },
-
-  {
-    id: "podcast",
-    title: "PODDCAST",
-    category: "projects",
-    year: "2024",
-    coverImage: "./assets/projects/podcast/cover.jpg",
-    teaserAlt: "Podcast cover",
-    blocks: [
-      { type: "text", heading: "PODDCAST", text: "Case text – du kan bygga med text- och bildblock." }
-    ]
-  },
-  {
-    id: "sj-inrikes",
-    title: "SJ INRIKES",
-    category: "projects",
-    year: "2023",
-    coverImage: "./assets/projects/sj-inrikes/cover.jpg",
-    teaserAlt: "SJ Inrikes cover",
-    blocks: [
-      { type: "text", heading: "SJ INRIKES", text: "Beskrivning." }
-    ]
   }
-];
-
-export const CATEGORIES = [
-  { id: "projects", label: "Projects" },
-  { id: "graphic-design", label: "Graphic design" },
-  { id: "copy-writing", label: "Copy writing" },
-  { id: "social-media", label: "Social media" }
 ];
