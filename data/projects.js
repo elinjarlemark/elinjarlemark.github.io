@@ -23,11 +23,10 @@ export const PROJECTS = [
         type: "image",
         src: "./assets/projects/sarda/2.jpg",
         alt: "SARDA – bild 2",
-        caption: "Exempelbild"
+        caption: ""
       }
     ]
   },
-
   {
     id: "rollups",
     title: "ROLLUPS",
@@ -36,7 +35,7 @@ export const PROJECTS = [
     coverImage: "./assets/projects/rollups/cover.jpg",
     teaserAlt: "Rollups cover",
     blocks: [
-      { type: "text", heading: "ROLLUPS", text: "Kort projektbeskrivning här. Lägg till fler block nedan." },
+      { type: "text", heading: "ROLLUPS", text: "Kort projektbeskrivning här." },
       { type: "image", src: "./assets/projects/rollups/1.jpg", alt: "Rollups – bild 1", caption: "" }
     ]
   },
@@ -52,7 +51,6 @@ export const PROJECTS = [
       { type: "text", heading: "PODDCAST", text: "Case text – du kan bygga med text- och bildblock." }
     ]
   },
-
   {
     id: "sj-inrikes",
     title: "SJ INRIKES",
