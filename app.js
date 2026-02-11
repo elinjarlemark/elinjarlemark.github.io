@@ -1,4 +1,4 @@
-import { PROJECTS, CATEGORIES } from "./data/projects.js";
+import { PROJECTS } from "./data/projects.js";
 
 const el = (sel) => document.querySelector(sel);
 
@@ -22,7 +22,6 @@ function hideSplash() {
   splash.classList.add("splash--hide");
 }
 function initSplash() {
-  // show once per session (valfritt)
   const already = sessionStorage.getItem("seenSplash");
   if (already) {
     hideSplash();
@@ -56,7 +55,6 @@ function initContact() {
       await navigator.clipboard.writeText(EMAIL);
       showToast("Copied email!");
     } catch {
-      // fallback
       const ta = document.createElement("textarea");
       ta.value = EMAIL;
       document.body.appendChild(ta);
@@ -67,18 +65,17 @@ function initContact() {
     }
   });
 
-  // "Contact" i sidebaren kan scrolla till kontakt-info på desktop om du vill.
-  el("#copyEmailBtn").addEventListener("click", () => {
+  el("#contactBtn").addEventListener("click", () => {
+    // om du vill fälla ut/scrolla till kontakt senare – nu bara fokus
     el("#emailBtn")?.focus();
   });
 }
 
 /* ============== Routing ============== */
 function parseRoute() {
-  const hash = location.hash.replace(/^#\/?/, ""); // remove "#/" or "#"
+  const hash = location.hash.replace(/^#\/?/, "");
   const parts = hash.split("/").filter(Boolean);
 
-  // default
   if (parts.length === 0) return { name: "home" };
 
   if (parts[0] === "home") return { name: "home" };
@@ -90,8 +87,8 @@ function parseRoute() {
 
 function setActiveNav(categoryId) {
   document.querySelectorAll(".topnav__link").forEach((a) => a.classList.remove("is-active"));
-
   if (!categoryId) return;
+
   const a = document.querySelector(`.topnav__link[data-nav="${categoryId}"]`);
   if (a) a.classList.add("is-active");
 }
@@ -121,7 +118,6 @@ function renderCategory(categoryId) {
 
   const list = PROJECTS.filter((p) => p.category === categoryId);
 
-  // Om kategorin är tom: visa något snyggt
   if (list.length === 0) {
     view.innerHTML = `
       <div class="category">
@@ -136,7 +132,7 @@ function renderCategory(categoryId) {
 
   const cards = list.map((p) => `
     <article class="card">
-      <img class="card__img" src="${p.coverImage}" alt="${p.teaserAlt || p.title}" />
+      <img class="card__img" src="${p.coverImage}" alt="${escapeHtml(p.teaserAlt || p.title)}" />
       <div class="card__overlay">
         <div class="card__title">${escapeHtml(p.title)}</div>
       </div>
@@ -180,7 +176,6 @@ function renderProject(projectId) {
         </section>
       `;
     }
-
     if (b.type === "image") {
       return `
         <figure class="block-image">
@@ -189,7 +184,6 @@ function renderProject(projectId) {
         </figure>
       `;
     }
-
     return "";
   }).join("");
 
@@ -209,11 +203,9 @@ function renderProject(projectId) {
 
 function render() {
   const route = parseRoute();
-
   if (route.name === "home") return renderHome();
   if (route.name === "category") return renderCategory(route.categoryId);
   if (route.name === "project") return renderProject(route.projectId);
-
   renderHome();
 }
 
