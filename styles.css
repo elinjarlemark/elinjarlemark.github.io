@@ -99,8 +99,19 @@ button{ font:inherit; color:inherit; background:none; border:0; padding:0; curso
   height:100vh;
   padding:36px 0 36px 28px;
 }
+
+/* Namnet ovanför sidmenyn */
+.sidebar__name{
+  font-size:32px;
+  font-weight:400;
+  color:var(--accent);
+  margin-bottom:18px;
+  padding-left:6px;
+  letter-spacing:-0.01em;
+}
+
 .sidebar__box{
-  height:100%;
+  height:calc(100% - 54px);
   background:var(--accent);
   border-radius:0 90px 90px 0;
   padding:48px 28px;
@@ -109,7 +120,7 @@ button{ font:inherit; color:inherit; background:none; border:0; padding:0; curso
 .sidebar__nav{
   display:flex;
   flex-direction:column;
-  gap:26px;
+  gap:18px; /* tightare så Digitala tools ligger närmare */
   width:100%;
 }
 .sidebar__link{
@@ -120,8 +131,9 @@ button{ font:inherit; color:inherit; background:none; border:0; padding:0; curso
   gap:10px;
 }
 .sidebar__btn{ text-align:left; }
+
 .sidebar__contact{
-  margin-top:-10px;
+  margin-top:0;
   display:flex;
   flex-direction:column;
   gap:12px;
@@ -140,20 +152,25 @@ button{ font:inherit; color:inherit; background:none; border:0; padding:0; curso
   font-size:16px;
   opacity:.95;
 }
-.sidebar__spacer{ flex:1; }
+
 .sidebar__meta{
   font-size:20px;
   opacity:.95;
+  margin-top:4px; /* lite närmare */
 }
+
+.sidebar__spacer{ flex:1; }
 
 /* Main */
 .main{
   padding:24px 28px 60px;
 }
+
+/* Huvudmeny centrerad: grid (brand vänster, meny centrerad i sin kolumn) */
 .topbar{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:start;
   gap:20px;
   padding:8px 0 22px;
 }
@@ -163,11 +180,12 @@ button{ font:inherit; color:inherit; background:none; border:0; padding:0; curso
   color:var(--accent);
   letter-spacing:-.01em;
 }
+
 .topnav{
   display:flex;
   gap:40px;
   align-items:center;
-  justify-content:center;
+  justify-content:center; /* centrera */
   flex-wrap:wrap;
   padding-top:8px;
 }
@@ -229,9 +247,10 @@ button{ font:inherit; color:inherit; background:none; border:0; padding:0; curso
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap:28px 34px;
 }
+
+/* 16:9 projektblock + hover overlay med titel */
 .card{
   position:relative;
-  border-radius:0;
   overflow:hidden;
   background:#fff0;
   aspect-ratio:16 / 9;
@@ -359,9 +378,14 @@ button{ font:inherit; color:inherit; background:none; border:0; padding:0; curso
     height:auto;
     padding:0 0 18px 0;
   }
+  .sidebar__name{
+    padding:18px 18px 0 18px;
+    margin-bottom:10px;
+  }
   .sidebar__box{
     border-radius:0;
     padding:18px 18px;
+    height:auto;
   }
   .sidebar__nav{
     flex-direction:row;
@@ -369,13 +393,20 @@ button{ font:inherit; color:inherit; background:none; border:0; padding:0; curso
     gap:14px 18px;
     align-items:center;
   }
-  .sidebar__contact{ display:none; } /* enkelt mobile-läge (kan göras drawer om du vill) */
+  .sidebar__contact{ display:none; }
   .sidebar__spacer{ display:none; }
   .sidebar__meta{ display:none; }
 
   .main{ padding:18px; }
-  .topbar{ flex-direction:column; align-items:flex-start; }
-  .topnav{ gap:22px; justify-content:flex-start; }
+
+  .topbar{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .topnav{
+    justify-content:flex-start;
+    gap:22px;
+  }
 
   .view{ padding:22px 0; }
   .home{ grid-template-columns: 1fr; }
