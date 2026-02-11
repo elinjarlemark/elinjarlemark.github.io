@@ -17,7 +17,7 @@ function showToast(msg) {
   showToast._t = window.setTimeout(() => toast.classList.remove("is-show"), 1200);
 }
 
-/* ============== Splash logic ============== */
+/* ============== Splash ============== */
 function hideSplash() {
   splash.classList.add("splash--hide");
 }
@@ -66,7 +66,6 @@ function initContact() {
   });
 
   el("#contactBtn").addEventListener("click", () => {
-    // om du vill fälla ut/scrolla till kontakt senare – nu bara fokus
     el("#emailBtn")?.focus();
   });
 }
