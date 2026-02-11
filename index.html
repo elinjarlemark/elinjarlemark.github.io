@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Elin Jarlemark – Portfolio</title>
+  <meta name="description" content="Portfolio – Elin Jarlemark" />
+
+  <!-- (Valfritt men bra) Preload fonts för mindre “flash” -->
+  <link rel="preload" href="./assets/fonts/TTCommonsPro-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/TTCommonsPro-Medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./assets/fonts/TTCommonsPro-Bold.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <!-- INTRO / SPLASH -->
+  <div id="splash" class="splash" role="dialog" aria-modal="true" aria-label="Intro">
+    <div class="splash__content">
+      <div class="splash__name">Elin Jarlemark</div>
+      <div class="splash__big">PORTFOLIO</div>
+      <div class="splash__tags">Communication, Graphic design, Copywriting</div>
+      <div class="splash__hint">Click to enter</div>
+    </div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="app">
+    <aside class="sidebar" aria-label="Sidomeny">
+      <div class="sidebar__box">
+        <nav class="sidebar__nav">
+          <a class="sidebar__link" href="./assets/resume.pdf" target="_blank" rel="noopener">Resumé</a>
+
+          <button class="sidebar__link sidebar__btn" type="button" id="copyEmailBtn">
+            Contact
+          </button>
+
+          <div class="sidebar__contact">
+            <button class="contact__item" type="button" id="emailBtn" aria-label="Kopiera email">
+              <span class="contact__label">Email</span>
+              <span class="contact__value" id="emailValue">example@mail.com</span>
+            </button>
+
+            <a class="contact__item" id="phoneLink" href="tel:+46700000000" aria-label="Ring telefonnummer">
+              <span class="contact__label">Phone</span>
+              <span class="contact__value" id="phoneValue">+46 70 000 00 00</span>
+            </a>
+          </div>
+
+          <div class="sidebar__spacer"></div>
+
+          <div class="sidebar__meta">Digitala tools</div>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <a class="brand" href="#/home" aria-label="Gå till startsidan">
+          Elin Jarlemark
+        </a>
+
+        <nav class="topnav" aria-label="Huvudmeny">
+          <a class="topnav__link" href="#/category/projects" data-nav="projects">Projects</a>
+          <a class="topnav__link" href="#/category/graphic-design" data-nav="graphic-design">Graphic design</a>
+          <a class="topnav__link" href="#/category/copy-writing" data-nav="copy-writing">Copy writing</a>
+          <a class="topnav__link" href="#/category/social-media" data-nav="social-media">Social media</a>
+        </nav>
+      </header>
+
+      <section id="view" class="view" aria-live="polite"></section>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
