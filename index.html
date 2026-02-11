@@ -6,7 +6,7 @@
   <title>Elin Jarlemark – Portfolio</title>
   <meta name="description" content="Portfolio – Elin Jarlemark" />
 
-  <!-- (Valfritt men bra) Preload fonts för mindre “flash” -->
+  <!-- Preload fonts (valfritt men bra) -->
   <link rel="preload" href="./assets/fonts/TTCommonsPro-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./assets/fonts/TTCommonsPro-Medium.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./assets/fonts/TTCommonsPro-Bold.woff2" as="font" type="font/woff2" crossorigin>
@@ -28,15 +28,20 @@
   <!-- LAYOUT -->
   <div class="app">
     <aside class="sidebar" aria-label="Sidomeny">
+      <!-- Namnet ovanför den röda sidmenyn -->
+      <div class="sidebar__name">Elin Jarlemark</div>
+
       <div class="sidebar__box">
         <nav class="sidebar__nav">
-          <a class="sidebar__link" href="./assets/resume.pdf" target="_blank" rel="noopener">Resumé</a>
+          <a class="sidebar__link" href="./assets/resume.pdf" target="_blank" rel="noopener">
+            Resumé
+          </a>
 
-          <button class="sidebar__link sidebar__btn" type="button" id="copyEmailBtn">
+          <button class="sidebar__link sidebar__btn" type="button" id="contactBtn">
             Contact
           </button>
 
-          <div class="sidebar__contact">
+          <div class="sidebar__contact" id="contactArea">
             <button class="contact__item" type="button" id="emailBtn" aria-label="Kopiera email">
               <span class="contact__label">Email</span>
               <span class="contact__value" id="emailValue">example@mail.com</span>
@@ -48,9 +53,11 @@
             </a>
           </div>
 
-          <div class="sidebar__spacer"></div>
-
+          <!-- Digitala tools närmare de andra rubrikerna -->
           <div class="sidebar__meta">Digitala tools</div>
+
+          <!-- Spacer sist -->
+          <div class="sidebar__spacer"></div>
         </nav>
       </div>
     </aside>
