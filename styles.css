@@ -14,10 +14,6 @@
   --dur-fast: 140ms;
   --dur: 220ms;
   --dur-slow: 320ms;
-
-  /* “Clean” UI */
-  --focus-underline: rgba(17,17,17,.35);
-  --focus-underline-white: rgba(255,255,255,.75);
 }
 
 /* ================== RESET ================== */
@@ -31,7 +27,6 @@ body{
   font-family:'Inter', sans-serif;
   font-weight:400;
   letter-spacing:-0.01em;
-  -webkit-text-size-adjust: 100%;
 }
 
 a{ color:inherit; text-decoration:none; }
@@ -43,38 +38,19 @@ button{
 }
 img{ display:block; max-width:100%; }
 
-/* Smooth interactions everywhere */
+/* Smooth interactions */
 a, button, .card, .home__img img{
   transition:
     transform var(--dur) var(--ease),
     opacity var(--dur) var(--ease),
-    filter var(--dur) var(--ease),
-    background-color var(--dur) var(--ease);
+    filter var(--dur) var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Remove “frames” on focus (no outline / no rounded focus ring) */
-:focus{ outline: none; }
-:focus-visible{ outline: none; }
-
-/* Instead: clean underline focus for links/buttons */
-.topnav__link:focus-visible,
-.sidebar__link:focus-visible,
-.contact__item:focus-visible{
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 6px;
-}
-
-/* Sidebar focus uses white-ish underline */
-.sidebar__link:focus-visible,
-.contact__item:focus-visible{
-  text-decoration-color: var(--focus-underline-white);
-}
-
-/* Topnav focus uses subtle dark underline */
-.topnav__link:focus-visible{
-  text-decoration-color: var(--focus-underline);
+/* No focus frames */
+:focus,
+:focus-visible{
+  outline:none;
 }
 
 /* ================== SPLASH ================== */
@@ -112,7 +88,6 @@ a, button, .card, .home__img img{
   padding:36px 0 36px 28px;
 }
 
-/* iOS Safari: undvik "100vh hoppar" när adressfältet gömmer sig */
 @supports (height: 100dvh){
   .sidebar{ height:100dvh; }
   .app{ min-height:100dvh; }
@@ -121,9 +96,7 @@ a, button, .card, .home__img img{
 .sidebar__name{
   display:block;
   font-size:32px;
-  color:var(--text);
   margin-bottom:18px;
-  letter-spacing:-0.02em;
 }
 .sidebar__name:hover{
   opacity:.85;
@@ -145,65 +118,36 @@ a, button, .card, .home__img img{
   height:100%;
 }
 
-/* Clean links: NO pills, NO frames */
 .sidebar__link,
 .sidebar__btn{
-  display:block;
-  width:100%;
-  text-align:left;
   font-size:22px;
-  font-weight:400;
-  letter-spacing:-0.01em;
-  color:#fff;
-
   padding:0;
-  margin:0;
+  color:#fff;
 }
-
 .sidebar__link:hover,
 .sidebar__btn:hover{
   opacity:.88;
   transform: translateY(-1px);
 }
 
-.sidebar__link:active,
-.sidebar__btn:active{
-  transform: translateY(0);
-  opacity:.82;
-}
-
-/* Contact */
 .sidebar__contact{
   display:flex;
   flex-direction:column;
   gap:12px;
 }
 
-.contact__item{
-  display:block;
-  text-align:left;
-  padding:0;
-}
-
-.contact__item:hover{
-  opacity:.88;
-  transform: translateY(-1px);
-}
-
-.contact__item:active{
-  transform: translateY(0);
-  opacity:.82;
-}
-
 .contact__label{
   font-size:14px;
-  color:#fff;
   opacity:.9;
 }
 
 .contact__value{
+  display:block;
   font-size:16px;
-  color:#fff;
+}
+
+#phoneValue{
+  white-space:nowrap;
 }
 
 .sidebar__spacer{ flex:1; }
@@ -216,14 +160,12 @@ a, button, .card, .home__img img{
 /* ================== TOP MENU ================== */
 .topbar{
   padding:8px 0 22px;
-
   position: sticky;
   top: 0;
   z-index: 50;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   background: rgba(248,247,246,.65);
-  border-bottom: 1px solid rgba(17,17,17,.06);
 }
 
 .topbar__inner{
@@ -236,29 +178,16 @@ a, button, .card, .home__img img{
 .topnav{
   display:flex;
   gap:40px;
-  flex-wrap:wrap;
-  justify-content:center;
 }
 
-/* Clean nav: no rounded backgrounds */
 .topnav__link{
   font-size:20px;
-  letter-spacing:-0.015em;
-  position:relative;
   padding-bottom:8px;
 }
-
 .topnav__link:hover{
-  opacity:.78;
+  opacity:.75;
   transform: translateY(-1px);
 }
-
-.topnav__link:active{
-  transform: translateY(0);
-  opacity:.72;
-}
-
-/* Active underline stays (clean, not a frame) */
 .topnav__link.is-active::after{
   content:"";
   position:absolute;
@@ -267,7 +196,6 @@ a, button, .card, .home__img img{
   bottom:0;
   height:3px;
   background:var(--accent);
-  border-radius:999px;
 }
 
 /* ================== VIEW ================== */
@@ -275,19 +203,14 @@ a, button, .card, .home__img img{
   max-width:var(--max);
   margin:0 auto;
   padding:34px 0;
-
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 260ms var(--ease), transform 260ms var(--ease);
-  will-change: opacity, transform;
+  transition:opacity 260ms var(--ease), transform 260ms var(--ease);
 }
-
 .view.is-leaving{
-  opacity: 0;
+  opacity:0;
   transform: translateY(8px);
 }
 .view.is-entering{
-  opacity: 0;
+  opacity:0;
   transform: translateY(10px);
 }
 
@@ -299,7 +222,7 @@ a, button, .card, .home__img img{
   align-items:start;
 }
 
-/* NO frame around image */
+/* ✅ IMAGE: scaled down proportionally, NO cropping */
 .home__img{
   width:100%;
   max-width:420px;
@@ -308,8 +231,8 @@ a, button, .card, .home__img img{
 .home__img img{
   width:100%;
   height:auto;
-  transform: scale(1.01);
-  transition: transform var(--dur-slow) var(--ease), filter var(--dur-slow) var(--ease);
+  max-height:260px;   /* ≈ hälften av tidigare visuella höjd */
+  transform: scale(1);
 }
 
 .home__img:hover img{
@@ -323,19 +246,16 @@ a, button, .card, .home__img img{
   gap:28px 34px;
 }
 
-/* Clean cards: no shadow “frames”, still smooth hover */
 .card{
   position:relative;
   aspect-ratio:16/9;
   overflow:hidden;
-  min-height:180px;
 }
 
 .card__img{
   width:100%;
   height:100%;
   object-fit:cover;
-  transition:opacity var(--dur) var(--ease), transform var(--dur-slow) var(--ease);
 }
 
 .card__overlay{
@@ -345,70 +265,27 @@ a, button, .card, .home__img img{
   place-items:center;
   opacity:0;
   transition:opacity var(--dur) var(--ease);
-  background: rgba(17,17,17,.10);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  background: rgba(17,17,17,.1);
 }
 
 .card__title{
   font-size:42px;
-  letter-spacing:-0.03em;
-  text-align:center;
-  padding:0 16px;
   color:#fff;
-  text-shadow: 0 12px 30px rgba(0,0,0,.25);
 }
 
-.card:hover .card__img{ opacity:.28; transform:scale(1.06); }
-.card:hover .card__overlay{ opacity:1; }
-
-.card__link{
-  position:absolute;
-  inset:0;
+.card:hover .card__overlay{
+  opacity:1;
 }
 
 /* ================== PROJECT ================== */
 .project__title{
   font-size:46px;
-  letter-spacing:-0.02em;
 }
 
 .block-text{
   max-width:680px;
   font-size:21px;
   line-height:1.6;
-  color: rgba(17,17,17,.86);
-}
-
-/* Simple blocks styling without “framed” look */
-.project__header{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  margin-bottom: 18px;
-}
-.project__meta{
-  color: rgba(17,17,17,.55);
-  font-size: 16px;
-}
-
-.blocks{
-  display:flex;
-  flex-direction:column;
-  gap: 18px;
-}
-
-.block-image{
-  margin: 0;
-}
-.block-image img{
-  width:100%;
-  height:auto;
-}
-.block-caption{
-  padding: 10px 0;
-  font-size: 14px;
-  color: rgba(17,17,17,.65);
 }
 
 /* ================== TOAST ================== */
@@ -421,7 +298,6 @@ a, button, .card, .home__img img{
   padding:10px 14px;
   border-radius:999px;
   opacity:0;
-  transform: translateY(6px);
   transition:opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 .toast.is-show{
@@ -436,66 +312,39 @@ a, button, .card, .home__img img{
   .sidebar{
     position:relative;
     height:auto;
-    padding: max(14px, env(safe-area-inset-top)) 14px 14px 14px;
+    padding:14px;
   }
 
   .sidebar__box{
     border-radius:18px;
-    height:auto;
     padding:18px;
   }
-
-  .sidebar__name{ margin-bottom:10px; }
-
-  .sidebar__nav{ gap:12px; }
-
-  .sidebar__link,
-  .sidebar__btn{
-    font-size:18px;
-  }
-
-  .main{ padding:14px; }
-
-  .topbar{ padding:10px 0 6px; }
-
-  .topnav{ gap:18px; }
-
-  .topnav__link{ font-size:18px; }
-
-  .view{ padding:18px 0; }
 
   .home{
     grid-template-columns:1fr;
     gap:18px;
   }
 
-  .home__img{ max-width:100%; }
+  .home__img{
+    max-width:100%;
+  }
+
+  .home__img img{
+    max-height:220px;
+  }
 
   .grid{
     grid-template-columns:1fr;
-    gap:16px;
   }
 
-  .card{ min-height:200px; }
-
-  .card__title{ font-size:32px; }
-
-  .toast{ left:14px; }
-}
-
-/* ================== iOS SAFARI SPECIAL ==================
-   Touch: visa overlay alltid så det inte känns “buggigt” */
-@media (hover: none) and (pointer: coarse){
-  .card__overlay{ opacity:1; }
-  .card__img{ opacity:.35; }
-  .card:hover .card__img{ transform:none; }
+  .toast{
+    left:14px;
+  }
 }
 
 /* ================== REDUCED MOTION ================== */
 @media (prefers-reduced-motion: reduce){
   *{
-    transition: none !important;
-    animation: none !important;
-    scroll-behavior: auto !important;
+    transition:none !important;
   }
 }
