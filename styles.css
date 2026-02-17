@@ -8,7 +8,6 @@
   --muted:rgba(17,17,17,.65);
   --max:1100px;
   --side:260px;
-  --safeTop: 0px;
 
   /* Motion */
   --ease: cubic-bezier(.2,.8,.2,1);
@@ -16,10 +15,9 @@
   --dur: 220ms;
   --dur-slow: 320ms;
 
-  /* UI */
-  --radius: 18px;
-  --shadow-sm: 0 10px 30px rgba(0,0,0,.08);
-  --shadow-xs: 0 6px 18px rgba(0,0,0,.06);
+  /* “Clean” UI */
+  --focus-underline: rgba(17,17,17,.35);
+  --focus-underline-white: rgba(255,255,255,.75);
 }
 
 /* ================== RESET ================== */
@@ -45,22 +43,38 @@ button{
 }
 img{ display:block; max-width:100%; }
 
-/* Global transitions for interactive elements */
-a, button{
+/* Smooth interactions everywhere */
+a, button, .card, .home__img img{
   transition:
     transform var(--dur) var(--ease),
     opacity var(--dur) var(--ease),
-    background-color var(--dur) var(--ease),
-    color var(--dur) var(--ease),
-    box-shadow var(--dur) var(--ease),
-    filter var(--dur) var(--ease);
+    filter var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
 
-:focus-visible{
-  outline: 3px solid rgba(17,17,17,.12);
-  outline-offset: 3px;
-  border-radius: 12px;
+/* Remove “frames” on focus (no outline / no rounded focus ring) */
+:focus{ outline: none; }
+:focus-visible{ outline: none; }
+
+/* Instead: clean underline focus for links/buttons */
+.topnav__link:focus-visible,
+.sidebar__link:focus-visible,
+.contact__item:focus-visible{
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+/* Sidebar focus uses white-ish underline */
+.sidebar__link:focus-visible,
+.contact__item:focus-visible{
+  text-decoration-color: var(--focus-underline-white);
+}
+
+/* Topnav focus uses subtle dark underline */
+.topnav__link:focus-visible{
+  text-decoration-color: var(--focus-underline);
 }
 
 /* ================== SPLASH ================== */
@@ -110,10 +124,9 @@ a, button{
   color:var(--text);
   margin-bottom:18px;
   letter-spacing:-0.02em;
-  transform: translateZ(0);
 }
 .sidebar__name:hover{
-  opacity: .85;
+  opacity:.85;
   transform: translateY(-1px);
 }
 
@@ -123,8 +136,6 @@ a, button{
   padding:48px 28px;
   height:calc(100% - 54px);
   color:#fff;
-  box-shadow: var(--shadow-xs);
-  transform: translateZ(0);
 }
 
 .sidebar__nav{
@@ -134,7 +145,7 @@ a, button{
   height:100%;
 }
 
-/* Make links feel like “buttons” */
+/* Clean links: NO pills, NO frames */
 .sidebar__link,
 .sidebar__btn{
   display:block;
@@ -145,26 +156,23 @@ a, button{
   letter-spacing:-0.01em;
   color:#fff;
 
-  padding:10px 12px;
+  padding:0;
   margin:0;
-  border-radius: 14px;
-  background: rgba(255,255,255,0);
 }
 
 .sidebar__link:hover,
 .sidebar__btn:hover{
-  background: rgba(255,255,255,.16);
-  box-shadow: 0 10px 24px rgba(0,0,0,.10);
+  opacity:.88;
   transform: translateY(-1px);
 }
 
 .sidebar__link:active,
 .sidebar__btn:active{
-  transform: translateY(0) scale(.99);
-  box-shadow: none;
+  transform: translateY(0);
+  opacity:.82;
 }
 
-/* Contact items */
+/* Contact */
 .sidebar__contact{
   display:flex;
   flex-direction:column;
@@ -174,25 +182,17 @@ a, button{
 .contact__item{
   display:block;
   text-align:left;
-  padding:10px 12px;
-  border-radius: 14px;
-  transition:
-    transform var(--dur) var(--ease),
-    background-color var(--dur) var(--ease),
-    box-shadow var(--dur) var(--ease),
-    opacity var(--dur) var(--ease),
-    max-height var(--dur-slow) var(--ease);
+  padding:0;
 }
 
 .contact__item:hover{
-  background: rgba(255,255,255,.14);
-  box-shadow: 0 10px 24px rgba(0,0,0,.10);
+  opacity:.88;
   transform: translateY(-1px);
 }
 
 .contact__item:active{
-  transform: translateY(0) scale(.99);
-  box-shadow: none;
+  transform: translateY(0);
+  opacity:.82;
 }
 
 .contact__label{
@@ -240,29 +240,31 @@ a, button{
   justify-content:center;
 }
 
+/* Clean nav: no rounded backgrounds */
 .topnav__link{
   font-size:20px;
   letter-spacing:-0.015em;
   position:relative;
-  padding:10px 12px 8px;
-  border-radius: 14px;
+  padding-bottom:8px;
 }
 
 .topnav__link:hover{
-  background: rgba(17,17,17,.04);
+  opacity:.78;
   transform: translateY(-1px);
 }
 
 .topnav__link:active{
-  transform: translateY(0) scale(.99);
+  transform: translateY(0);
+  opacity:.72;
 }
 
+/* Active underline stays (clean, not a frame) */
 .topnav__link.is-active::after{
   content:"";
   position:absolute;
-  left:12px;
-  right:12px;
-  bottom:6px;
+  left:0;
+  right:0;
+  bottom:0;
   height:3px;
   background:var(--accent);
   border-radius:999px;
@@ -297,12 +299,10 @@ a, button{
   align-items:start;
 }
 
+/* NO frame around image */
 .home__img{
   width:100%;
   max-width:420px;
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
 }
 
 .home__img img{
@@ -323,16 +323,12 @@ a, button{
   gap:28px 34px;
 }
 
+/* Clean cards: no shadow “frames”, still smooth hover */
 .card{
   position:relative;
   aspect-ratio:16/9;
   overflow:hidden;
   min-height:180px;
-
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-xs);
-  transform: translateZ(0);
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
 
 .card__img{
@@ -359,13 +355,8 @@ a, button{
   letter-spacing:-0.03em;
   text-align:center;
   padding:0 16px;
-  color: #fff;
+  color:#fff;
   text-shadow: 0 12px 30px rgba(0,0,0,.25);
-}
-
-.card:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 18px 48px rgba(0,0,0,.12);
 }
 
 .card:hover .card__img{ opacity:.28; transform:scale(1.06); }
@@ -389,7 +380,7 @@ a, button{
   color: rgba(17,17,17,.86);
 }
 
-/* (Optional) basic project blocks styling */
+/* Simple blocks styling without “framed” look */
 .project__header{
   display:flex;
   flex-direction:column;
@@ -409,19 +400,15 @@ a, button{
 
 .block-image{
   margin: 0;
-  border-radius: var(--radius);
-  overflow:hidden;
-  box-shadow: var(--shadow-xs);
 }
 .block-image img{
   width:100%;
   height:auto;
 }
 .block-caption{
-  padding: 10px 12px;
+  padding: 10px 0;
   font-size: 14px;
   color: rgba(17,17,17,.65);
-  background: rgba(255,255,255,.6);
 }
 
 /* ================== TOAST ================== */
@@ -436,18 +423,15 @@ a, button{
   opacity:0;
   transform: translateY(6px);
   transition:opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
-  box-shadow: 0 14px 40px rgba(0,0,0,.20);
 }
 .toast.is-show{
   opacity:1;
   transform: translateY(0);
 }
 
-/* ================== MOBILE (ALL PHONES) ================== */
+/* ================== MOBILE ================== */
 @media (max-width: 820px){
-  .app{
-    grid-template-columns:1fr;
-  }
+  .app{ grid-template-columns:1fr; }
 
   .sidebar{
     position:relative;
@@ -461,76 +445,50 @@ a, button{
     padding:18px;
   }
 
-  .sidebar__name{
-    margin-bottom:10px;
-  }
+  .sidebar__name{ margin-bottom:10px; }
 
-  .sidebar__nav{
-    gap:12px;
-  }
+  .sidebar__nav{ gap:12px; }
 
   .sidebar__link,
   .sidebar__btn{
     font-size:18px;
-    padding:10px 10px;
   }
 
-  .main{
-    padding:14px;
-  }
+  .main{ padding:14px; }
 
-  .topbar{
-    padding:10px 0 6px;
-  }
+  .topbar{ padding:10px 0 6px; }
 
-  .topnav{
-    gap:18px;
-  }
+  .topnav{ gap:18px; }
 
-  .topnav__link{
-    font-size:18px;
-    padding:10px 10px 8px;
-  }
+  .topnav__link{ font-size:18px; }
 
-  .view{
-    padding:18px 0;
-  }
+  .view{ padding:18px 0; }
 
   .home{
     grid-template-columns:1fr;
     gap:18px;
   }
 
-  .home__img{
-    max-width:100%;
-  }
+  .home__img{ max-width:100%; }
 
   .grid{
     grid-template-columns:1fr;
     gap:16px;
   }
 
-  .card{
-    min-height:200px;
-  }
+  .card{ min-height:200px; }
 
-  .card__title{
-    font-size:32px;
-  }
+  .card__title{ font-size:32px; }
 
-  .toast{
-    left:14px;
-  }
+  .toast{ left:14px; }
 }
 
 /* ================== iOS SAFARI SPECIAL ==================
-   På iOS kan hover fastna.
-   Vi stänger hover-effekten på touch-enheter. */
+   Touch: visa overlay alltid så det inte känns “buggigt” */
 @media (hover: none) and (pointer: coarse){
   .card__overlay{ opacity:1; }
   .card__img{ opacity:.35; }
   .card:hover .card__img{ transform:none; }
-  .card:hover{ transform:none; box-shadow: var(--shadow-xs); }
 }
 
 /* ================== REDUCED MOTION ================== */
