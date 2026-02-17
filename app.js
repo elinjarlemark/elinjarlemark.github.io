@@ -10,18 +10,78 @@ const EMAIL = "example@mail.com";
 const PHONE_TEL = "+46700000000";
 const PHONE_TEXT = "+46 70 000 00 00";
 
+/* ============== Utils ============== */
+const prefersReducedMotion = () =>
+  window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 function showToast(msg) {
+  if (!toast) return;
   toast.textContent = msg;
   toast.classList.add("is-show");
   window.clearTimeout(showToast._t);
-  showToast._t = window.setTimeout(() => toast.classList.remove("is-show"), 1200);
+  showToast._t = window.setTimeout(() => toast.classList.remove("is-show"), 1300);
+}
+
+/**
+ * Smoothly swap the content in #view with a fade/slide.
+ * Requires CSS classes .view.is-leaving and .view.is-entering (already in the modern styles I gave you).
+ */
+function animateViewSwap(renderFn) {
+  if (!view) return renderFn();
+
+  // If user prefers reduced motion, just render directly
+  if (prefersReducedMotion()) {
+    renderFn();
+    return;
+  }
+
+  // Leave animation
+  view.classList.add("is-leaving");
+
+  // Give the CSS time to start the transition
+  window.setTimeout(() => {
+    renderFn();
+
+    // Enter animation
+    view.classList.remove("is-leaving");
+    view.classList.add("is-entering");
+
+    // Remove entering on next frame
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        view.classList.remove("is-entering");
+      });
+    });
+  }, 160);
+}
+
+function smoothScrollTop() {
+  // Only scroll main content area – but simplest is window scroll.
+  // Respect reduced motion
+  if (prefersReducedMotion()) {
+    window.scrollTo(0, 0);
+    return;
+  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 /* ============== Splash ============== */
 function hideSplash() {
-  splash.classList.add("splash--hide");
+  splash?.classList.add("splash--hide");
 }
+
 function initSplash() {
+  if (!splash) return;
+
   const already = sessionStorage.getItem("seenSplash");
   if (already) {
     hideSplash();
@@ -35,6 +95,7 @@ function initSplash() {
   };
 
   const t = window.setTimeout(go, 2500);
+
   const onAny = () => {
     window.clearTimeout(t);
     go();
@@ -46,11 +107,21 @@ function initSplash() {
 
 /* ============== Contact ============== */
 function initContact() {
-  el("#emailValue").textContent = EMAIL;
-  el("#phoneValue").textContent = PHONE_TEXT;
-  el("#phoneLink").setAttribute("href", `tel:${PHONE_TEL}`);
+  const emailValue = el("#emailValue");
+  const phoneValue = el("#phoneValue");
+  const phoneLink = el("#phoneLink");
+  const emailBtn = el("#emailBtn");
+  const contactBtn = el("#contactBtn");
+  const contactWrap = el(".sidebar__contact");
 
-  el("#emailBtn").addEventListener("click", async () => {
+  if (emailValue) emailValue.textContent = EMAIL;
+  if (phoneValue) phoneValue.textContent = PHONE_TEXT;
+  if (phoneLink) phoneLink.setAttribute("href", `tel:${PHONE_TEL}`);
+
+  // Hide contact by default (feels cleaner) – you can remove this if you want it always visible
+  if (contactWrap) contactWrap.hidden = true;
+
+  emailBtn?.addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText(EMAIL);
       showToast("Copied email!");
@@ -65,8 +136,17 @@ function initContact() {
     }
   });
 
-  el("#contactBtn").addEventListener("click", () => {
-    el("#emailBtn")?.focus();
+  // Toggle contact panel on click (modern UI feel)
+  contactBtn?.addEventListener("click", () => {
+    if (!contactWrap) return;
+    contactWrap.hidden = !contactWrap.hidden;
+
+    // Focus first item when opening
+    if (!contactWrap.hidden) {
+      emailBtn?.focus();
+      // tiny toast for feedback
+      showToast("Contact details");
+    }
   });
 }
 
@@ -93,10 +173,8 @@ function setActiveNav(categoryId) {
 }
 
 /* ============== Views ============== */
-function renderHome() {
-  setActiveNav(null);
-
-  view.innerHTML = `
+function homeHtml() {
+  return `
     <div class="home">
       <div class="home__img">
         <img src="./assets/me.jpg" alt="Porträtt" />
@@ -112,13 +190,11 @@ function renderHome() {
   `;
 }
 
-function renderCategory(categoryId) {
-  setActiveNav(categoryId);
-
+function categoryHtml(categoryId) {
   const list = PROJECTS.filter((p) => p.category === categoryId);
 
   if (list.length === 0) {
-    view.innerHTML = `
+    return `
       <div class="category">
         <div class="block-text">
           <h3>Inga projekt ännu</h3>
@@ -126,20 +202,23 @@ function renderCategory(categoryId) {
         </div>
       </div>
     `;
-    return;
   }
 
-  const cards = list.map((p) => `
-    <article class="card">
-      <img class="card__img" src="${p.coverImage}" alt="${escapeHtml(p.teaserAlt || p.title)}" />
-      <div class="card__overlay">
-        <div class="card__title">${escapeHtml(p.title)}</div>
-      </div>
-      <a class="card__link" href="#/project/${encodeURIComponent(p.id)}" aria-label="Öppna ${escapeHtml(p.title)}"></a>
-    </article>
-  `).join("");
+  const cards = list
+    .map(
+      (p) => `
+      <article class="card">
+        <img class="card__img" src="${p.coverImage}" alt="${escapeHtml(p.teaserAlt || p.title)}" />
+        <div class="card__overlay">
+          <div class="card__title">${escapeHtml(p.title)}</div>
+        </div>
+        <a class="card__link" href="#/project/${encodeURIComponent(p.id)}" aria-label="Öppna ${escapeHtml(p.title)}"></a>
+      </article>
+    `
+    )
+    .join("");
 
-  view.innerHTML = `
+  return `
     <div class="category">
       <div class="grid">
         ${cards}
@@ -148,11 +227,12 @@ function renderCategory(categoryId) {
   `;
 }
 
-function renderProject(projectId) {
+function projectHtml(projectId) {
   const p = PROJECTS.find((x) => x.id === projectId);
 
   if (!p) {
-    view.innerHTML = `
+    setActiveNav(null);
+    return `
       <div class="project">
         <div class="block-text">
           <h3>Projektet hittades inte</h3>
@@ -160,33 +240,33 @@ function renderProject(projectId) {
         </div>
       </div>
     `;
-    setActiveNav(null);
-    return;
   }
 
   setActiveNav(p.category);
 
-  const blocksHtml = (p.blocks || []).map((b) => {
-    if (b.type === "text") {
-      return `
-        <section class="block-text">
-          ${b.heading ? `<h3>${escapeHtml(b.heading)}</h3>` : ""}
-          ${b.text ? `<p>${escapeHtml(b.text)}</p>` : ""}
-        </section>
-      `;
-    }
-    if (b.type === "image") {
-      return `
-        <figure class="block-image">
-          <img src="${b.src}" alt="${escapeHtml(b.alt || p.title)}" />
-          ${b.caption ? `<figcaption class="block-caption">${escapeHtml(b.caption)}</figcaption>` : ""}
-        </figure>
-      `;
-    }
-    return "";
-  }).join("");
+  const blocksHtml = (p.blocks || [])
+    .map((b) => {
+      if (b.type === "text") {
+        return `
+          <section class="block-text">
+            ${b.heading ? `<h3>${escapeHtml(b.heading)}</h3>` : ""}
+            ${b.text ? `<p>${escapeHtml(b.text)}</p>` : ""}
+          </section>
+        `;
+      }
+      if (b.type === "image") {
+        return `
+          <figure class="block-image">
+            <img src="${b.src}" alt="${escapeHtml(b.alt || p.title)}" />
+            ${b.caption ? `<figcaption class="block-caption">${escapeHtml(b.caption)}</figcaption>` : ""}
+          </figure>
+        `;
+      }
+      return "";
+    })
+    .join("");
 
-  view.innerHTML = `
+  return `
     <article class="project">
       <div class="project__header">
         <h1 class="project__title">${escapeHtml(p.title)}</h1>
@@ -200,21 +280,50 @@ function renderProject(projectId) {
   `;
 }
 
-function render() {
-  const route = parseRoute();
-  if (route.name === "home") return renderHome();
-  if (route.name === "category") return renderCategory(route.categoryId);
-  if (route.name === "project") return renderProject(route.projectId);
-  renderHome();
+/* ============== Render ============== */
+let lastRouteKey = "";
+
+function routeKey(route) {
+  if (!route) return "";
+  if (route.name === "home") return "home";
+  if (route.name === "category") return `category:${route.categoryId}`;
+  if (route.name === "project") return `project:${route.projectId}`;
+  return "home";
 }
 
-function escapeHtml(str) {
-  return String(str ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+function render() {
+  const route = parseRoute();
+  const key = routeKey(route);
+
+  // update active nav (also in projectHtml, but safe here too)
+  if (route.name === "home") setActiveNav(null);
+  if (route.name === "category") setActiveNav(route.categoryId);
+
+  const doRender = () => {
+    if (route.name === "home") {
+      view.innerHTML = homeHtml();
+      return;
+    }
+    if (route.name === "category") {
+      view.innerHTML = categoryHtml(route.categoryId);
+      return;
+    }
+    if (route.name === "project") {
+      view.innerHTML = projectHtml(route.projectId);
+      return;
+    }
+
+    view.innerHTML = homeHtml();
+  };
+
+  // Only animate when route actually changes
+  const changed = key !== lastRouteKey;
+  lastRouteKey = key;
+
+  if (changed) smoothScrollTop();
+
+  // Animate view swap for modern feel
+  animateViewSwap(doRender);
 }
 
 /* ============== Boot ============== */
