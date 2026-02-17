@@ -31,31 +31,22 @@ function showToast(msg) {
   showToast._t = window.setTimeout(() => toast.classList.remove("is-show"), 1300);
 }
 
-/**
- * Smoothly swap the content in #view with a fade/slide.
- * Requires CSS classes .view.is-leaving and .view.is-entering (already in the modern styles I gave you).
- */
 function animateViewSwap(renderFn) {
   if (!view) return renderFn();
 
-  // If user prefers reduced motion, just render directly
   if (prefersReducedMotion()) {
     renderFn();
     return;
   }
 
-  // Leave animation
   view.classList.add("is-leaving");
 
-  // Give the CSS time to start the transition
   window.setTimeout(() => {
     renderFn();
 
-    // Enter animation
     view.classList.remove("is-leaving");
     view.classList.add("is-entering");
 
-    // Remove entering on next frame
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         view.classList.remove("is-entering");
@@ -65,8 +56,6 @@ function animateViewSwap(renderFn) {
 }
 
 function smoothScrollTop() {
-  // Only scroll main content area – but simplest is window scroll.
-  // Respect reduced motion
   if (prefersReducedMotion()) {
     window.scrollTo(0, 0);
     return;
@@ -118,7 +107,7 @@ function initContact() {
   if (phoneValue) phoneValue.textContent = PHONE_TEXT;
   if (phoneLink) phoneLink.setAttribute("href", `tel:${PHONE_TEL}`);
 
-  // Hide contact by default (feels cleaner) – you can remove this if you want it always visible
+  // Toggle panel (modern feel)
   if (contactWrap) contactWrap.hidden = true;
 
   emailBtn?.addEventListener("click", async () => {
@@ -136,15 +125,11 @@ function initContact() {
     }
   });
 
-  // Toggle contact panel on click (modern UI feel)
   contactBtn?.addEventListener("click", () => {
     if (!contactWrap) return;
     contactWrap.hidden = !contactWrap.hidden;
-
-    // Focus first item when opening
     if (!contactWrap.hidden) {
       emailBtn?.focus();
-      // tiny toast for feedback
       showToast("Contact details");
     }
   });
@@ -174,6 +159,7 @@ function setActiveNav(categoryId) {
 
 /* ============== Views ============== */
 function homeHtml() {
+  setActiveNav(null);
   return `
     <div class="home">
       <div class="home__img">
@@ -191,6 +177,8 @@ function homeHtml() {
 }
 
 function categoryHtml(categoryId) {
+  setActiveNav(categoryId);
+
   const list = PROJECTS.filter((p) => p.category === categoryId);
 
   if (list.length === 0) {
@@ -204,19 +192,15 @@ function categoryHtml(categoryId) {
     `;
   }
 
-  const cards = list
-    .map(
-      (p) => `
-      <article class="card">
-        <img class="card__img" src="${p.coverImage}" alt="${escapeHtml(p.teaserAlt || p.title)}" />
-        <div class="card__overlay">
-          <div class="card__title">${escapeHtml(p.title)}</div>
-        </div>
-        <a class="card__link" href="#/project/${encodeURIComponent(p.id)}" aria-label="Öppna ${escapeHtml(p.title)}"></a>
-      </article>
-    `
-    )
-    .join("");
+  const cards = list.map((p) => `
+    <article class="card">
+      <img class="card__img" src="${p.coverImage}" alt="${escapeHtml(p.teaserAlt || p.title)}" />
+      <div class="card__overlay">
+        <div class="card__title">${escapeHtml(p.title)}</div>
+      </div>
+      <a class="card__link" href="#/project/${encodeURIComponent(p.id)}" aria-label="Öppna ${escapeHtml(p.title)}"></a>
+    </article>
+  `).join("");
 
   return `
     <div class="category">
@@ -244,27 +228,25 @@ function projectHtml(projectId) {
 
   setActiveNav(p.category);
 
-  const blocksHtml = (p.blocks || [])
-    .map((b) => {
-      if (b.type === "text") {
-        return `
-          <section class="block-text">
-            ${b.heading ? `<h3>${escapeHtml(b.heading)}</h3>` : ""}
-            ${b.text ? `<p>${escapeHtml(b.text)}</p>` : ""}
-          </section>
-        `;
-      }
-      if (b.type === "image") {
-        return `
-          <figure class="block-image">
-            <img src="${b.src}" alt="${escapeHtml(b.alt || p.title)}" />
-            ${b.caption ? `<figcaption class="block-caption">${escapeHtml(b.caption)}</figcaption>` : ""}
-          </figure>
-        `;
-      }
-      return "";
-    })
-    .join("");
+  const blocksHtml = (p.blocks || []).map((b) => {
+    if (b.type === "text") {
+      return `
+        <section class="block-text">
+          ${b.heading ? `<h3>${escapeHtml(b.heading)}</h3>` : ""}
+          ${b.text ? `<p>${escapeHtml(b.text)}</p>` : ""}
+        </section>
+      `;
+    }
+    if (b.type === "image") {
+      return `
+        <figure class="block-image">
+          <img src="${b.src}" alt="${escapeHtml(b.alt || p.title)}" />
+          ${b.caption ? `<figcaption class="block-caption">${escapeHtml(b.caption)}</figcaption>` : ""}
+        </figure>
+      `;
+    }
+    return "";
+  }).join("");
 
   return `
     <article class="project">
@@ -295,10 +277,6 @@ function render() {
   const route = parseRoute();
   const key = routeKey(route);
 
-  // update active nav (also in projectHtml, but safe here too)
-  if (route.name === "home") setActiveNav(null);
-  if (route.name === "category") setActiveNav(route.categoryId);
-
   const doRender = () => {
     if (route.name === "home") {
       view.innerHTML = homeHtml();
@@ -312,17 +290,14 @@ function render() {
       view.innerHTML = projectHtml(route.projectId);
       return;
     }
-
     view.innerHTML = homeHtml();
   };
 
-  // Only animate when route actually changes
   const changed = key !== lastRouteKey;
   lastRouteKey = key;
 
   if (changed) smoothScrollTop();
 
-  // Animate view swap for modern feel
   animateViewSwap(doRender);
 }
 
