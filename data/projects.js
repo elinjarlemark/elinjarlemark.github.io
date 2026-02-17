@@ -4,8 +4,11 @@ export const PROJECTS = [
     title: "PODDCAST",
     category: "projects",
     year: "2024",
-    coverImage: "./assets/projects/podcast/cover.jpg",
+
+    // ✅ FIX: korrekt sökväg enligt din mappstruktur
+    coverImage: "./assets/projects/projects/podcast/cover.jpg",
     teaserAlt: "Podcast cover",
+
     blocks: [
       {
         type: "text",
@@ -14,8 +17,13 @@ export const PROJECTS = [
       },
       {
         type: "image",
-        src: "./assets/projects/podcast/1.jpg",
+        src: "./assets/projects/projects/podcast/1.jpg",
         alt: "Podcast bild 1"
+      },
+      {
+        type: "image",
+        src: "./assets/projects/projects/podcast/2.jpg",
+        alt: "Podcast bild 2"
       }
     ]
   },
