@@ -107,7 +107,7 @@ function initContact() {
   if (phoneValue) phoneValue.textContent = PHONE_TEXT;
   if (phoneLink) phoneLink.setAttribute("href", `tel:${PHONE_TEL}`);
 
-  // Toggle panel (modern feel)
+  // Clean UI: collapsed by default
   if (contactWrap) contactWrap.hidden = true;
 
   emailBtn?.addEventListener("click", async () => {
