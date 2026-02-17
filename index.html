@@ -22,17 +22,16 @@
   <div class="app">
     <!-- SIDEBAR -->
     <aside class="sidebar">
-      <!-- Klickbart namn -->
       <a href="#/home" class="sidebar__name">Elin Jarlemark</a>
 
       <div class="sidebar__box">
         <nav class="sidebar__nav">
-          <a class="sidebar__link" href="./assets/resume.pdf" target="_blank">Resumé</a>
+          <a class="sidebar__link" href="./assets/resume.pdf" target="_blank" rel="noopener">Resumé</a>
 
-          <button class="sidebar__link sidebar__btn" id="contactBtn">Contact</button>
+          <button class="sidebar__link sidebar__btn" id="contactBtn" type="button">Contact</button>
 
-          <div class="sidebar__contact">
-            <button class="contact__item" id="emailBtn">
+          <div class="sidebar__contact" aria-label="Contact details">
+            <button class="contact__item" id="emailBtn" type="button">
               <span class="contact__label">Email</span>
               <span class="contact__value" id="emailValue">example@mail.com</span>
             </button>
@@ -43,6 +42,7 @@
             </a>
           </div>
 
+          <!-- (Digitala tools borttagen) -->
           <div class="sidebar__spacer"></div>
         </nav>
       </div>
@@ -66,7 +66,7 @@
     </main>
   </div>
 
-  <div id="toast" class="toast"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script type="module" src="./app.js"></script>
 </body>
