@@ -110,8 +110,6 @@ a, button{
   color:var(--text);
   margin-bottom:18px;
   letter-spacing:-0.02em;
-
-  /* small micro motion */
   transform: translateZ(0);
 }
 .sidebar__name:hover{
@@ -125,8 +123,6 @@ a, button{
   padding:48px 28px;
   height:calc(100% - 54px);
   color:#fff;
-
-  /* depth */
   box-shadow: var(--shadow-xs);
   transform: translateZ(0);
 }
@@ -152,8 +148,7 @@ a, button{
   padding:10px 12px;
   margin:0;
   border-radius: 14px;
-
-  background: rgba(255,255,255,0); /* for smooth hover */
+  background: rgba(255,255,255,0);
 }
 
 .sidebar__link:hover,
@@ -169,7 +164,7 @@ a, button{
   box-shadow: none;
 }
 
-/* Contact items - more modern spacing + hover */
+/* Contact items */
 .sidebar__contact{
   display:flex;
   flex-direction:column;
@@ -184,7 +179,9 @@ a, button{
   transition:
     transform var(--dur) var(--ease),
     background-color var(--dur) var(--ease),
-    box-shadow var(--dur) var(--ease);
+    box-shadow var(--dur) var(--ease),
+    opacity var(--dur) var(--ease),
+    max-height var(--dur-slow) var(--ease);
 }
 
 .contact__item:hover{
@@ -209,18 +206,6 @@ a, button{
   color:#fff;
 }
 
-/* Meta (if present) */
-.sidebar__meta{
-  display:block;
-  width:100%;
-  text-align:left;
-  font-size:20px;
-  letter-spacing:-0.01em;
-  color:#fff;
-  opacity:.95;
-  padding: 10px 12px;
-}
-
 .sidebar__spacer{ flex:1; }
 
 /* ================== MAIN ================== */
@@ -232,7 +217,6 @@ a, button{
 .topbar{
   padding:8px 0 22px;
 
-  /* modern sticky glass */
   position: sticky;
   top: 0;
   z-index: 50;
@@ -290,14 +274,12 @@ a, button{
   margin:0 auto;
   padding:34px 0;
 
-  /* allow smooth visual swaps if you add classes via JS later */
   opacity: 1;
   transform: translateY(0);
   transition: opacity 260ms var(--ease), transform 260ms var(--ease);
   will-change: opacity, transform;
 }
 
-/* Optional classes to use if/when you animate view swaps in app.js */
 .view.is-leaving{
   opacity: 0;
   transform: translateY(8px);
@@ -341,8 +323,6 @@ a, button{
   gap:28px 34px;
 }
 
-/* iOS Safari kan krångla med aspect-ratio i vissa lägen.
-   Vi har en fallback via min-height i .card */
 .card{
   position:relative;
   aspect-ratio:16/9;
@@ -409,6 +389,41 @@ a, button{
   color: rgba(17,17,17,.86);
 }
 
+/* (Optional) basic project blocks styling */
+.project__header{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-bottom: 18px;
+}
+.project__meta{
+  color: rgba(17,17,17,.55);
+  font-size: 16px;
+}
+
+.blocks{
+  display:flex;
+  flex-direction:column;
+  gap: 18px;
+}
+
+.block-image{
+  margin: 0;
+  border-radius: var(--radius);
+  overflow:hidden;
+  box-shadow: var(--shadow-xs);
+}
+.block-image img{
+  width:100%;
+  height:auto;
+}
+.block-caption{
+  padding: 10px 12px;
+  font-size: 14px;
+  color: rgba(17,17,17,.65);
+  background: rgba(255,255,255,.6);
+}
+
 /* ================== TOAST ================== */
 .toast{
   position:fixed;
@@ -434,7 +449,6 @@ a, button{
     grid-template-columns:1fr;
   }
 
-  /* På mobil: gör sidomenyn till en toppsektion för att undvika sticky-strul */
   .sidebar{
     position:relative;
     height:auto;
@@ -458,11 +472,6 @@ a, button{
   .sidebar__link,
   .sidebar__btn{
     font-size:18px;
-    padding:10px 10px;
-  }
-
-  .sidebar__meta{
-    font-size:16px;
     padding:10px 10px;
   }
 
@@ -514,12 +523,12 @@ a, button{
   }
 }
 
-/* ================== iOS SAFARI SPECIAL (extra) ==================
-   På iOS kan hover fastna och göra overlay konstig.
-   Vi stänger hover-effekten på touch-enheter (det känns bättre på mobil). */
+/* ================== iOS SAFARI SPECIAL ==================
+   På iOS kan hover fastna.
+   Vi stänger hover-effekten på touch-enheter. */
 @media (hover: none) and (pointer: coarse){
-  .card__overlay{ opacity:1; }       /* alltid visa titel på mobil */
-  .card__img{ opacity:.35; }         /* lite tonad så texten syns */
+  .card__overlay{ opacity:1; }
+  .card__img{ opacity:.35; }
   .card:hover .card__img{ transform:none; }
   .card:hover{ transform:none; box-shadow: var(--shadow-xs); }
 }
